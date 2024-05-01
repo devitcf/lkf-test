@@ -29,6 +29,7 @@ export class CustomerController {
 
   @Delete(":id")
   async remove(@Param("id", ParseIntPipe) id: number) {
+    // Confirm the entity exist before deleting
     const customer = await this.customerService.findOne(id);
     if (!customer) throw new NotFoundException();
 

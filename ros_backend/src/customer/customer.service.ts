@@ -14,11 +14,11 @@ export class CustomerService {
   }
 
   async findAll() {
-    return this.prisma.customer.findMany();
+    return this.prisma.customer.findMany({ include: { restaurants: true } });
   }
 
   async findOne(id: number) {
-    return this.prisma.customer.findUnique({ where: { id } });
+    return this.prisma.customer.findUnique({ where: { id }, include: { restaurants: true } });
   }
 
   async update(id: number, updateCustomerDto: UpdateCustomerDto) {

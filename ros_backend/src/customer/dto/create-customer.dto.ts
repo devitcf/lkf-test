@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsString } from "class-validator";
+import { IsArray, IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class CreateCustomerDto {
   @IsString()
@@ -8,4 +8,9 @@ export class CreateCustomerDto {
   @IsEmail()
   @IsNotEmpty()
   email: string;
+
+  @IsArray()
+  @IsOptional()
+  @IsNumber({}, { each: true })
+  restaurantIds?: number[];
 }
