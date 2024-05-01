@@ -4,7 +4,7 @@ services:
     image: postgres:16.2
     restart: unless-stopped
     env_file:
-      - env/postgres/.env.local
+      - env/postgres/local.env
     volumes:
       - ./mount_volumes/postgres/data:/var/lib/postgresql/data
     ports:
