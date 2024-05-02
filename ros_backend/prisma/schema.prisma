@@ -36,24 +36,34 @@ model Restaurant {
 }
 
 model Item {
-  id           Int        @id @default(autoincrement())
+  id           Int         @id @default(autoincrement())
   name         String
   price        Float
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
   restaurantId Int
-  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
-  orders       Order[]
+  restaurant   Restaurant  @relation(fields: [restaurantId], references: [id])
+  orderItems   OrderItem[]
 }
 
 model Order {
-  id           Int        @id @default(autoincrement())
-  totalPrice   Decimal    @default(0)
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
+  id           Int         @id @default(autoincrement())
+  totalPrice   Float       @default(0)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
   customerId   Int
-  customer     Customer   @relation(fields: [customerId], references: [id])
+  customer     Customer    @relation(fields: [customerId], references: [id])
   restaurantId Int
-  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
-  items        Item[]
+  restaurant   Restaurant  @relation(fields: [restaurantId], references: [id])
+  orderItems   OrderItem[]
+}
+
+model OrderItem {
+  id        Int      @id @default(autoincrement())
+  itemId    Int
+  item      Item     @relation(fields: [itemId], references: [id])
+  orderId   Int
+  order     Order    @relation(fields: [orderId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

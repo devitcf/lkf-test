@@ -37,6 +37,8 @@ export class ItemController {
 
   @Get(":id")
   async findOne(@Param("id", ParseIntPipe) id: number) {
+    const item = await this.itemService.findOne(+id);
+    if (!item) throw new NotFoundException();
     return this.itemService.findOne(+id);
   }
 
@@ -52,6 +54,7 @@ export class ItemController {
 
   @Delete(":id")
   async remove(@Param("id", ParseIntPipe) id: number) {
+    // Confirm the entity exist before deleting
     const item = await this.itemService.findOne(id);
     if (!item) throw new NotFoundException();
 

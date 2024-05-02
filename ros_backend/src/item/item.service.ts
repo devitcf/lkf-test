@@ -3,6 +3,7 @@ import { CreateItemDto } from "./dto/create-item.dto";
 import { UpdateItemDto } from "./dto/update-item.dto";
 import { PrismaService } from "../prisma/prisma.service";
 import { Item } from "./entities/item.entity";
+import { PrismaPromise } from "@prisma/client";
 
 @Injectable()
 export class ItemService {
@@ -34,7 +35,22 @@ export class ItemService {
     });
   }
 
-  async remove(id: number): Promise<Item> {
-    return this.prisma.item.delete({ where: { id }, include: { restaurant: true } });
+  async remove(id: number): Promise<void> {
+    const transactions: PrismaPromise<unknown>[] = [];
+
+    transactions.push(
+      this.prisma.orderItem.deleteMany({
+        where: {
+          itemId: id,
+        },
+      }),
+    );
+    transactions.push(
+      this.prisma.item.delete({
+        where: { id },
+      }),
+    );
+
+    await this.prisma.$transaction(transactions);
   }
 }

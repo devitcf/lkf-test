@@ -19,7 +19,9 @@ export class CustomerController {
 
   @Get(":id")
   async findOne(@Param("id", ParseIntPipe) id: number) {
-    return this.customerService.findOne(+id);
+    const user = await this.customerService.findOne(+id);
+    if (!user) throw new NotFoundException();
+    return user;
   }
 
   @Patch(":id")

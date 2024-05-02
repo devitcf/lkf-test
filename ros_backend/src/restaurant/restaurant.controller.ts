@@ -19,7 +19,9 @@ export class RestaurantController {
 
   @Get(":id")
   async findOne(@Param("id", ParseIntPipe) id: number) {
-    return this.restaurantService.findOne(+id);
+    const restaurant = await this.restaurantService.findOne(+id);
+    if (!restaurant) throw new NotFoundException();
+    return restaurant;
   }
 
   @Patch(":id")

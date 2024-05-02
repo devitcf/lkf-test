@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from "@nestjs/common";
 import { CreateCustomerDto } from "./dto/create-customer.dto";
 import { UpdateCustomerDto } from "./dto/update-customer.dto";
 import { PrismaService } from "../prisma/prisma.service";
-import { Prisma } from "@prisma/client";
+import { Prisma, PrismaPromise } from "@prisma/client";
 import { Customer } from "./entities/customer.entity";
 
 @Injectable()
@@ -23,7 +23,7 @@ export class CustomerService {
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
         // Prisma: An operation failed because it depends on one or more records that were required but not found.
-        if (e.code === "P2025") {
+        if (e.code === "P2003" || e.code === "P2003") {
           throw new BadRequestException({ message: "Some restaurantIds are not valid" });
         }
       }
@@ -54,7 +54,7 @@ export class CustomerService {
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
         // Prisma: An operation failed because it depends on one or more records that were required but not found.
-        if (e.code === "P2025") {
+        if (e.code === "P2003" || e.code === "P2003") {
           throw new BadRequestException({ message: "Some restaurantIds are not valid" });
         }
       }
@@ -62,7 +62,32 @@ export class CustomerService {
     }
   }
 
-  async remove(id: number): Promise<Customer> {
-    return this.prisma.customer.delete({ where: { id }, include: { restaurants: true } });
+  async remove(id: number): Promise<void> {
+    const transactions: PrismaPromise<unknown>[] = [];
+
+    const orders = await this.prisma.order.findMany({ where: { customerId: id } });
+    const orderIds = orders.map((order) => order.id);
+
+    transactions.push(
+      this.prisma.orderItem.deleteMany({
+        where: {
+          orderId: { in: orderIds },
+        },
+      }),
+    );
+    transactions.push(
+      this.prisma.order.deleteMany({
+        where: {
+          customerId: id,
+        },
+      }),
+    );
+    transactions.push(
+      this.prisma.customer.delete({
+        where: { id },
+      }),
+    );
+
+    await this.prisma.$transaction(transactions);
   }
 }
