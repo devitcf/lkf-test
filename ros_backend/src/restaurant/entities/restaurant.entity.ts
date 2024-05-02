@@ -1,4 +1,4 @@
-import { Customer, Item } from "@prisma/client";
+import { Customer, Item, Order } from "@prisma/client";
 
 export class Restaurant {
   id: number;
@@ -9,4 +9,5 @@ export class Restaurant {
   updatedAt: Date;
   customers: Customer[];
   items: Item[];
+  orders: Order[];
 }

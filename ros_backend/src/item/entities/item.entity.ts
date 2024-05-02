@@ -6,5 +6,6 @@ export class Item {
   price: number;
   createdAt: Date;
   updatedAt: Date;
+  restaurantId: number;
   restaurant: Restaurant;
 }

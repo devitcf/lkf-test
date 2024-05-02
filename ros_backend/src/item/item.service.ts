@@ -2,25 +2,26 @@ import { Injectable } from "@nestjs/common";
 import { CreateItemDto } from "./dto/create-item.dto";
 import { UpdateItemDto } from "./dto/update-item.dto";
 import { PrismaService } from "../prisma/prisma.service";
+import { Item } from "./entities/item.entity";
 
 @Injectable()
 export class ItemService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(createItemDto: CreateItemDto) {
+  async create(createItemDto: CreateItemDto): Promise<Item> {
     const { name, price, restaurantId } = createItemDto;
     return this.prisma.item.create({ data: { name, price, restaurantId }, include: { restaurant: true } });
   }
 
-  async findAll() {
+  async findAll(): Promise<Item[]> {
     return this.prisma.item.findMany({ include: { restaurant: true } });
   }
 
-  async findOne(id: number) {
-    return this.prisma.item.findUnique({ where: { id } });
+  async findOne(id: number): Promise<Item | null> {
+    return this.prisma.item.findUnique({ where: { id }, include: { restaurant: true } });
   }
 
-  async update(id: number, updateItemDto: UpdateItemDto) {
+  async update(id: number, updateItemDto: UpdateItemDto): Promise<Item> {
     const { name, price, restaurantId } = updateItemDto;
     return this.prisma.item.update({
       where: { id },
@@ -29,10 +30,11 @@ export class ItemService {
         price,
         restaurantId,
       },
+      include: { restaurant: true },
     });
   }
 
-  async remove(id: number) {
-    return this.prisma.item.delete({ where: { id } });
+  async remove(id: number): Promise<Item> {
+    return this.prisma.item.delete({ where: { id }, include: { restaurant: true } });
   }
 }
