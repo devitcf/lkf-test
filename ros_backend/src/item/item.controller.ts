@@ -52,7 +52,7 @@ export class ItemController {
 
   @Delete(":id")
   async remove(@Param("id", ParseIntPipe) id: number) {
-    const item = this.itemService.findOne(id);
+    const item = await this.itemService.findOne(id);
     if (!item) throw new NotFoundException();
 
     return this.itemService.remove(+id);

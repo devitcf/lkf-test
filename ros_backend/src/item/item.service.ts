@@ -9,11 +9,11 @@ export class ItemService {
 
   async create(createItemDto: CreateItemDto) {
     const { name, price, restaurantId } = createItemDto;
-    return this.prisma.item.create({ data: { name, price, restaurantId } });
+    return this.prisma.item.create({ data: { name, price, restaurantId }, include: { restaurant: true } });
   }
 
   async findAll() {
-    return this.prisma.item.findMany();
+    return this.prisma.item.findMany({ include: { restaurant: true } });
   }
 
   async findOne(id: number) {

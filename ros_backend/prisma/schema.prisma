@@ -17,10 +17,10 @@ model Customer {
   id          Int          @id @default(autoincrement())
   name        String
   email       String
-  restaurants Restaurant[]
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
-  Order       Order[]
+  restaurants Restaurant[]
+  orders      Order[]
 }
 
 model Restaurant {
@@ -28,33 +28,32 @@ model Restaurant {
   name        String
   address     String
   cuisineType String
-  customers   Customer[]
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
-  Item        Item[]
-  Order       Order[]
+  customers   Customer[]
+  items       Item[]
+  orders      Order[]
 }
 
 model Item {
   id           Int        @id @default(autoincrement())
   name         String
-  price        Int
-  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
-  restaurantId Int
+  price        Float
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
-  Order        Order?     @relation(fields: [orderId], references: [id])
-  orderId      Int?
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  restaurantId Int
+  orders       Order[]
 }
 
 model Order {
   id           Int        @id @default(autoincrement())
+  totalPrice   Decimal    @default(0)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
   customer     Customer   @relation(fields: [customerId], references: [id])
   customerId   Int
   restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
   restaurantId Int
   items        Item[]
-  totalPrice   Decimal    @default(0)
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
 }

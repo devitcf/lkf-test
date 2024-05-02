@@ -13,7 +13,7 @@ export class RestaurantService {
   }
 
   async findAll() {
-    return this.prisma.restaurant.findMany();
+    return this.prisma.restaurant.findMany({ include: { customers: true, items: true, orders: true } });
   }
 
   async findOne(id: number) {
