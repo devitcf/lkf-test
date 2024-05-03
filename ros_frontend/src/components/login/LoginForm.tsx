@@ -1,6 +1,7 @@
 "use client";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Box, Button, Grid, IconButton, InputAdornment, Paper, TextField, Typography } from "@mui/material";
+import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { loginAction } from "@/actions";
@@ -11,6 +12,7 @@ const LoginForm = () => {
   const [username, setUsername] = useState({ error: false, value: "" });
   const [password, setPassword] = useState({ error: false, value: "" });
   const [showPass, setShowPass] = useState(false);
+  const router = useRouter();
 
   const handleChange = (value: string, type = "username"): void => {
     if (type === "username") {
@@ -40,7 +42,7 @@ const LoginForm = () => {
       setPassword({ ...password, error: true });
       toast.error("Incorrect credentials");
     } else {
-      toast.success("Login successful");
+      router.push("/");
     }
   };
 
