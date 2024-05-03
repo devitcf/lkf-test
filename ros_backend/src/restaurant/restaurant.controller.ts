@@ -16,22 +16,20 @@ import { UpdateRestaurantDto } from "./dto/update-restaurant.dto";
 import { AuthGuard } from "../auth/auth.guard";
 
 @Controller("restaurants")
+@UseGuards(AuthGuard)
 export class RestaurantController {
   constructor(private readonly restaurantService: RestaurantService) {}
 
-  @UseGuards(AuthGuard)
   @Post()
   async create(@Body() createRestaurantDto: CreateRestaurantDto) {
     return this.restaurantService.create(createRestaurantDto);
   }
 
-  @UseGuards(AuthGuard)
   @Get()
   async findAll() {
     return this.restaurantService.findAll();
   }
 
-  @UseGuards(AuthGuard)
   @Get(":id")
   async findOne(@Param("id", ParseIntPipe) id: number) {
     const restaurant = await this.restaurantService.findOne(+id);
@@ -39,13 +37,11 @@ export class RestaurantController {
     return restaurant;
   }
 
-  @UseGuards(AuthGuard)
   @Patch(":id")
   async update(@Param("id", ParseIntPipe) id: number, @Body() updateRestaurantDto: UpdateRestaurantDto) {
     return this.restaurantService.update(+id, updateRestaurantDto);
   }
 
-  @UseGuards(AuthGuard)
   @Delete(":id")
   async remove(@Param("id", ParseIntPipe) id: number) {
     // Confirm the entity exist before deleting
