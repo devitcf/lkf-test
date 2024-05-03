@@ -1,7 +1,7 @@
 "use client";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { Button, Container, IconButton, InputAdornment, InputLabel, TextField } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import { Box, Button, Grid, IconButton, InputAdornment, Paper, TextField, Typography } from "@mui/material";
+import { useRef, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { loginAction } from "@/actions";
 
@@ -44,73 +44,75 @@ const LoginForm = () => {
     }
   };
 
-  useEffect(() => {
-    usernameInput.current?.focus();
-  }, []);
-
   return (
-    <Container data-testid="LoginForm" className={`relative flex h-full w-full flex-col justify-center`} maxWidth="sm">
-      <div className={"text-center opacity-100 lg:opacity-0 mb-12 text-3xl uppercase"}>Restaurant Ordering System</div>
-      <InputLabel htmlFor="username" className={"text-xl"}>
-        Username
-      </InputLabel>
-      <TextField
-        id="username"
-        autoComplete="off"
-        classes={{
-          root: `mb-6`,
+    <Grid item xs={12} sm={8} md={5} component={Paper} elevation={0} square>
+      <Box
+        sx={{
+          my: 8,
+          mx: 4,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
-        error={username.error}
-        value={username.value}
-        onChange={(e) => handleChange(e.target.value)}
-        onKeyDown={(e) => e.key === "Enter" && passInput.current?.focus()}
-        inputRef={usernameInput}
-        fullWidth
-      />
-      <InputLabel htmlFor="password" className={`text-xl`}>
-        Password
-      </InputLabel>
-      <TextField
-        id="password"
-        autoComplete="off"
-        classes={{
-          root: `mb-6`,
-        }}
-        error={password.error}
-        value={password.value}
-        onChange={(e) => handleChange(e.target.value, "pass")}
-        onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
-        inputRef={passInput}
-        InputProps={{
-          type: showPass ? "text" : "password",
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton
-                data-testid="toggleBtn"
-                aria-label="Toggle password visibility"
-                tabIndex={-1}
-                onClick={() => setShowPass(!showPass)}
-                edge="end"
-              >
-                {showPass ? <VisibilityOff /> : <Visibility />}
-              </IconButton>
-            </InputAdornment>
-          ),
-        }}
-        fullWidth
-      />
-      <Button
-        aria-label="submit"
-        color="warning"
-        className={`mt-6 p-3 text-lg text-white`}
-        onClick={handleSubmit}
-        variant="contained"
-        fullWidth
       >
-        Login
-      </Button>
+        <Typography component="h1" variant="h5">
+          Restaurant Ordering System
+        </Typography>
+        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 4 }}>
+          <TextField
+            id="username"
+            label="Username"
+            autoComplete="off"
+            sx={{ mb: 3 }}
+            error={username.error}
+            value={username.value}
+            onChange={(e) => handleChange(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && passInput.current?.focus()}
+            inputRef={usernameInput}
+            fullWidth
+            autoFocus
+          />
+          <TextField
+            id="password"
+            label="Password"
+            autoComplete="off"
+            error={password.error}
+            value={password.value}
+            onChange={(e) => handleChange(e.target.value, "pass")}
+            onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+            inputRef={passInput}
+            InputProps={{
+              type: showPass ? "text" : "password",
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    data-testid="toggleBtn"
+                    aria-label="Toggle password visibility"
+                    tabIndex={-1}
+                    onClick={() => setShowPass(!showPass)}
+                    edge="end"
+                  >
+                    {showPass ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+            fullWidth
+          />
+          <Button
+            aria-label="submit"
+            variant="contained"
+            color="warning"
+            sx={{ mt: 3, padding: 2 }}
+            onClick={handleSubmit}
+            fullWidth
+          >
+            Sign In
+          </Button>
+        </Box>
+      </Box>
       <ToastContainer theme={"colored"} />
-    </Container>
+    </Grid>
   );
 };
 
