@@ -1,22 +1,37 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException, ParseIntPipe } from "@nestjs/common";
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  NotFoundException,
+  ParseIntPipe,
+  UseGuards,
+} from "@nestjs/common";
 import { CustomerService } from "./customer.service";
 import { CreateCustomerDto } from "./dto/create-customer.dto";
 import { UpdateCustomerDto } from "./dto/update-customer.dto";
+import { AuthGuard } from "../auth/auth.guard";
 
 @Controller("customers")
 export class CustomerController {
   constructor(private readonly customerService: CustomerService) {}
 
+  @UseGuards(AuthGuard)
   @Post()
   async create(@Body() createCustomerDto: CreateCustomerDto) {
     return this.customerService.create(createCustomerDto);
   }
 
+  @UseGuards(AuthGuard)
   @Get()
   async findAll() {
     return this.customerService.findAll();
   }
 
+  @UseGuards(AuthGuard)
   @Get(":id")
   async findOne(@Param("id", ParseIntPipe) id: number) {
     const user = await this.customerService.findOne(+id);
@@ -24,11 +39,13 @@ export class CustomerController {
     return user;
   }
 
+  @UseGuards(AuthGuard)
   @Patch(":id")
   async update(@Param("id", ParseIntPipe) id: number, @Body() updateCustomerDto: UpdateCustomerDto) {
     return this.customerService.update(+id, updateCustomerDto);
   }
 
+  @UseGuards(AuthGuard)
   @Delete(":id")
   async remove(@Param("id", ParseIntPipe) id: number) {
     // Confirm the entity exist before deleting

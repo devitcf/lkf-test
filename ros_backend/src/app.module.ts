@@ -9,6 +9,8 @@ import { CustomerModule } from "./customer/customer.module";
 import { RestaurantModule } from "./restaurant/restaurant.module";
 import { ItemModule } from "./item/item.module";
 import { OrderModule } from "./order/order.module";
+import { AuthModule } from "./auth/auth.module";
+import { UserModule } from "./user/user.module";
 
 @Module({
   imports: [
@@ -22,6 +24,8 @@ import { OrderModule } from "./order/order.module";
     RestaurantModule,
     ItemModule,
     OrderModule,
+    AuthModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

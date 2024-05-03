@@ -13,6 +13,22 @@ class EnvironmentVariables {
   @IsString()
   @IsNotEmpty()
   DATABASE_URL: string;
+
+  @IsString()
+  @IsNotEmpty()
+  ACCESS_TOKEN_SECRET: string;
+
+  @IsString()
+  @IsNotEmpty()
+  REFRESH_TOKEN_SECRET: string;
+
+  @IsString()
+  @IsNotEmpty()
+  ACCESS_TOKEN_EXPIRES_IN: string;
+
+  @IsString()
+  @IsNotEmpty()
+  REFRESH_TOKEN_EXPIRES_IN: string;
 }
 
 export function validate(config: Record<string, unknown>) {
