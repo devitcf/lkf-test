@@ -40,7 +40,6 @@ export class OrderService {
         include: { customer: true, restaurant: true, orderItems: true },
       });
     } catch (e) {
-      console.log(e);
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
         // Prisma: An operation failed because it depends on one or more records that were required but not found.
         if (e.code === "P2025" || e.code === "P2003") {

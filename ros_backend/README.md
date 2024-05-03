@@ -8,8 +8,9 @@ Copy the file `.env.example`  and rename it as `.env`, and fill in the required 
 
 ## Running the app
 ```bash
-# Install and perform migration and seeding
+# Install necessary and perform migration and seeding
 npm i
+npx prisma generate
 npx prisma migrate deploy
 npx prisma db seed
 ```
