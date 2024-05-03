@@ -104,8 +104,14 @@ const LoginForm = () => {
           <Button
             aria-label="submit"
             variant="contained"
-            color="warning"
-            sx={{ mt: 3, padding: 2 }}
+            sx={{
+              mt: 3,
+              padding: 2,
+              backgroundColor: "#09FE92",
+              ":hover": { backgroundColor: "#0CD28C" },
+              fontSize: 16,
+              fontWeight: "bold",
+            }}
             onClick={handleSubmit}
             fullWidth
           >
