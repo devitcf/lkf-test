@@ -82,7 +82,7 @@ export class AuthService {
     });
   }
 
-  async refreshTokens(userId: number, jti: string): Promise<AuthEntity> {
+  async refreshToken(userId: number, jti: string): Promise<AuthEntity> {
     const user = await this.userService.findOne(userId);
     if (!user) {
       throw new UnauthorizedException({ message: "Access denied" });

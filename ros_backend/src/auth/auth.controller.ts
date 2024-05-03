@@ -4,6 +4,7 @@ import { AuthEntity } from "./entities/auth.entity";
 import { LoginDto } from "./dto/login.dto";
 import { AuthGuard } from "./auth.guard";
 import { GetCurrentUser } from "../decorators/get-current-user.decorator";
+import { TokenType } from "../decorators/token-type-decorator";
 
 @Controller("auth")
 export class AuthController {
@@ -16,6 +17,7 @@ export class AuthController {
   }
 
   @UseGuards(AuthGuard)
+  @TokenType("refreshToken")
   @Post("logout")
   @HttpCode(HttpStatus.OK)
   async logout(@GetCurrentUser("jti") jti: string): Promise<void> {
@@ -23,9 +25,10 @@ export class AuthController {
   }
 
   @UseGuards(AuthGuard)
+  @TokenType("refreshToken")
   @Post("refresh-token")
   @HttpCode(HttpStatus.OK)
-  async refreshTokens(@GetCurrentUser("sub") userId: number, @GetCurrentUser("jti") jti: string): Promise<AuthEntity> {
-    return await this.authService.refreshTokens(userId, jti);
+  async refreshToken(@GetCurrentUser("sub") userId: number, @GetCurrentUser("jti") jti: string): Promise<AuthEntity> {
+    return await this.authService.refreshToken(userId, jti);
   }
 }
