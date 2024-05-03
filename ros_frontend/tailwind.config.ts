@@ -9,7 +9,8 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        warning: "rgb(240,120,25)",
+        success: "#09FE92",
+        darkSuccess: "#0CD28C",
       },
     },
   },

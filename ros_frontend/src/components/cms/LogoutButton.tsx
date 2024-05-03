@@ -1,8 +1,8 @@
 "use client";
 import { Button } from "@mui/material";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
-import { logoutAction } from "@/actions";
 import { useRouter } from "next/navigation";
+import { logoutAction } from "@/actions";
 
 const LogoutButton = () => {
   const router = useRouter();
@@ -16,7 +16,14 @@ const LogoutButton = () => {
     <>
       <Button
         onClick={onClick}
-        sx={{ paddingLeft: 1, paddingRight: 1, minWidth: 0, width: { xs: 40, sm: "100%" } }}
+        sx={{
+          paddingLeft: 0,
+          paddingRight: 0,
+          paddingTop: 1,
+          paddingBottom: 1,
+          minWidth: 0,
+          width: { xs: 40, sm: "100%" },
+        }}
         variant="outlined"
       >
         <LogoutOutlinedIcon role="img" aria-label="Logout Outline Icon" />
