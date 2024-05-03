@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Noto_Serif } from "next/font/google";
+import { Roboto } from "next/font/google";
 import { ReactNode } from "react";
 import "./globals.css";
+import "react-toastify/dist/ReactToastify.css";
 
-const inter = Noto_Serif({ subsets: ["latin"] });
+const roboto = Roboto({ weight: ["300", "400", "500", "700"], subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
   title: "Restaurant Ordering System",
@@ -17,7 +18,7 @@ type Props = {
 const RootLayout = ({ children }: Props) => {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={roboto.className}>{children}</body>
     </html>
   );
 };
