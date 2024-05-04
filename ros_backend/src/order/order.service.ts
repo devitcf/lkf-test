@@ -34,7 +34,7 @@ export class OrderService {
 
       return await this.prisma.order.update({
         where: { id: order.id },
-        data: { totalPrice },
+        data: { totalPrice: Number((Math.round(totalPrice * 100) / 100).toFixed(2)) },
         include: { customer: true, restaurant: true, orderItems: true },
       });
     } catch (e) {
@@ -50,7 +50,7 @@ export class OrderService {
 
   async findAll(): Promise<Order[]> {
     return this.prisma.order.findMany({
-      include: { customer: true, restaurant: true, orderItems: { include: { item: true } } },
+      include: { customer: true, restaurant: { include: { items: true } }, orderItems: { include: { item: true } } },
       orderBy: { id: "desc" },
     });
   }
@@ -90,7 +90,7 @@ export class OrderService {
 
       return await this.prisma.order.update({
         where: { id: order.id },
-        data: { totalPrice },
+        data: { totalPrice: Number((Math.round(totalPrice * 100) / 100).toFixed(2)) },
         include: { customer: true, restaurant: true, orderItems: true },
       });
     } catch (e) {
