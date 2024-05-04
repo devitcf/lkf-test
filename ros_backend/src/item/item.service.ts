@@ -15,7 +15,7 @@ export class ItemService {
   }
 
   async findAll(): Promise<Item[]> {
-    return this.prisma.item.findMany({ include: { restaurant: true } });
+    return this.prisma.item.findMany({ include: { restaurant: true }, orderBy: { id: "desc" } });
   }
 
   async findOne(id: number): Promise<Item | null> {

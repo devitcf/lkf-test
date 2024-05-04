@@ -32,7 +32,7 @@ export class CustomerService {
   }
 
   async findAll(): Promise<Customer[]> {
-    return this.prisma.customer.findMany({ include: { restaurants: true } });
+    return this.prisma.customer.findMany({ include: { restaurants: true }, orderBy: { id: "desc" } });
   }
 
   async findOne(id: number): Promise<Customer | null> {

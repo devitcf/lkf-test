@@ -53,6 +53,7 @@ export class OrderService {
   async findAll(): Promise<Order[]> {
     return this.prisma.order.findMany({
       include: { customer: true, restaurant: true, orderItems: { include: { item: true } } },
+      orderBy: { id: "desc" },
     });
   }
 

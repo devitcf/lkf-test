@@ -18,7 +18,10 @@ export class RestaurantService {
   }
 
   async findAll(): Promise<Restaurant[]> {
-    return this.prisma.restaurant.findMany({ include: { customers: true, items: true, orders: true } });
+    return this.prisma.restaurant.findMany({
+      include: { customers: true, items: true, orders: true },
+      orderBy: { id: "desc" },
+    });
   }
 
   async findOne(id: number): Promise<Restaurant | null> {
