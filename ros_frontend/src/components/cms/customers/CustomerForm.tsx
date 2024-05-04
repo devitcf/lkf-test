@@ -81,7 +81,7 @@ const CustomerForm = ({ customer, restaurants = [], onCloseDialog }: Props) => {
 
   return (
     <div className={"flex flex-col gap-4"}>
-      <div className={"text-xl font-bold"}>{isCreateCustomer ? "Create" : "Edit"} Customer</div>
+      <h1 className={"text-xl font-bold"}>{isCreateCustomer ? "Create" : "Edit"} Customer</h1>
       <div className={"py-4 border-t-2 space-y-6"}>
         <TextField
           label="Name"

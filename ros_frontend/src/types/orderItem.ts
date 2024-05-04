@@ -8,3 +8,8 @@ export type OrderItem = {
   orderId: number;
   order: Order;
 };
+
+export type UpdateOrderItem = Omit<OrderItem, "id"> & {
+  id?: number;
+  status?: "new" | "delete";
+};

@@ -12,3 +12,14 @@ export type Order = {
   orderItems: OrderItem[];
   createdAt: Date;
 };
+
+export type CreateOrderData = {
+  customerId: number;
+  restaurantId: number;
+  itemIds?: number[];
+};
+
+export type UpdateOrderData = {
+  itemIds: number[];
+  removeOrderItemIds: number[];
+};
