@@ -37,6 +37,21 @@ services:
       npm run db:seed && \
       npm run start:prod \
       "
+  ros_nextjs:
+    build:
+      context: ../ros_frontend
+      dockerfile: ../ros_frontend/Dockerfile
+    restart: unless-stopped
+    networks:
+      - bridge
+    env_file:
+      - env/ros_frontend/local.env
+    ports:
+      - '3000:3000'
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - ros_nestjs
 
 networks:
   bridge:
