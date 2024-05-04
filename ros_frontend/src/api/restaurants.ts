@@ -1,13 +1,35 @@
-import { fetchRequestWithAuth, logApiError } from "@/helper/api";
-import { Restaurant } from "@/types";
+import { fetchRequestWithAuth, logApiError, postRequestWithAuth } from "@/helper/api";
+import { RestaurantFormData, ErrorResponse, Restaurant } from "@/types";
+import { redirect } from "next/navigation";
+
+const apiUrl = `${process.env.API_SERVER_URL}/restaurants`;
 
 export const getRestaurants = async (): Promise<Restaurant[]> => {
-  let customers: Restaurant[] = [];
+  let restaurants: Restaurant[] = [];
   try {
-    const url = `${process.env.API_SERVER_URL}/restaurants`;
-    customers = await fetchRequestWithAuth<Restaurant[]>(url);
+    const res = await fetchRequestWithAuth<Restaurant[] | ErrorResponse>(apiUrl);
+    if ("error" in res) {
+      if (res.statusCode === 401) redirect("/");
+    } else {
+      restaurants = res;
+    }
   } catch (e) {
     logApiError("getRestaurants", e as Error);
   }
-  return customers;
+  return restaurants;
+};
+
+export const createRestaurant = async (data: RestaurantFormData): Promise<Restaurant | ErrorResponse> => {
+  return postRequestWithAuth<Restaurant | ErrorResponse>(apiUrl, data);
+};
+
+export const updateRestaurant = async (
+  userId: number,
+  data: RestaurantFormData
+): Promise<Restaurant | ErrorResponse> => {
+  return postRequestWithAuth<Restaurant | ErrorResponse>(`${apiUrl}/${userId}`, data, "PATCH");
+};
+
+export const removeRestaurant = async (userId: number): Promise<boolean | ErrorResponse> => {
+  return postRequestWithAuth<boolean | ErrorResponse>(`${apiUrl}/${userId}`, undefined, "DELETE");
 };

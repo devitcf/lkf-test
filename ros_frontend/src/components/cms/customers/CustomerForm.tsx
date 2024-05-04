@@ -102,7 +102,6 @@ const CustomerForm = ({ customer, restaurants = [], onCloseDialog }: Props) => {
           fullWidth
         />
         <Autocomplete
-          id="tags-standard"
           value={formCustomer?.restaurants ?? []}
           onChange={(_, newValue: Restaurant[]) => {
             setFormCustomer((prevState) => ({ ...prevState, restaurants: newValue ?? [] }));

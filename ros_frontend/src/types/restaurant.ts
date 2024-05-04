@@ -10,3 +10,9 @@ export type Restaurant = {
   items: Item[];
   orders: Order[];
 };
+
+export type RestaurantFormData = {
+  name: string;
+  address: string;
+  cuisineType: string;
+};
