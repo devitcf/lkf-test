@@ -1,11 +1,43 @@
-version: '3.8'
+version: '3'
 services:
-  postgres:
+  ros_postgres:
     image: postgres:16.2
     restart: unless-stopped
+    networks:
+      - bridge
     env_file:
       - env/postgres/local.env
     volumes:
       - ./mount_volumes/postgres/data:/var/lib/postgresql/data
     ports:
       - '5432:5432'
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready", "-d", "db_prod" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+  ros_nestjs:
+    build:
+      context: ../ros_backend
+      dockerfile: ../ros_backend/Dockerfile
+    restart: unless-stopped
+    networks:
+      - bridge
+    env_file:
+      - env/ros_backend/local.env
+    ports:
+      - '8000:8000'
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      ros_postgres:
+        condition: service_healthy
+    command: bash -c "
+      npm run db:migrate && \
+      npm run db:seed && \
+      npm run start:prod \
+      "
+
+networks:
+  bridge:
+    driver: bridge
