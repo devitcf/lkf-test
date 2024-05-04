@@ -1,0 +1,19 @@
+{
+  "name": "lkf_test",
+  "version": "1.0.0",
+  "description": "A restaurant order system for demo",
+  "scripts": {
+    "compose:up": "docker compose -f ./docker/compose.yaml up -d",
+    "compose:down": "docker compose -f ./docker/compose.yaml down"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devitcf/lkf_test.git"
+  },
+  "author": "Devi Tse",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/devitcf/lkf_test/issues"
+  },
+  "homepage": "https://github.com/devitcf/lkf_test#readme"
+}
