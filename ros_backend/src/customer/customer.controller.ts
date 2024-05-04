@@ -39,6 +39,9 @@ export class CustomerController {
 
   @Patch(":id")
   async update(@Param("id", ParseIntPipe) id: number, @Body() updateCustomerDto: UpdateCustomerDto) {
+    const customer = await this.customerService.findOne(id);
+    if (!customer) throw new NotFoundException();
+
     return this.customerService.update(+id, updateCustomerDto);
   }
 

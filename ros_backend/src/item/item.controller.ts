@@ -47,6 +47,8 @@ export class ItemController {
 
   @Patch(":id")
   async update(@Param("id", ParseIntPipe) id: number, @Body() updateItemDto: UpdateItemDto) {
+    const item = await this.itemService.findOne(id);
+    if (!item) throw new NotFoundException();
     if (updateItemDto.restaurantId) {
       const restaurant = await this.restaurantService.findOne(updateItemDto.restaurantId);
       if (!restaurant) throw new BadRequestException("Restaurant not exist");

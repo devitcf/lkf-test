@@ -57,6 +57,8 @@ export class OrderController {
 
   @Patch(":id")
   async update(@Param("id", ParseIntPipe) id: number, @Body() updateOrderDto: UpdateOrderDto) {
+    const order = await this.orderService.findOne(id);
+    if (!order) throw new NotFoundException();
     if (updateOrderDto.customerId) {
       const customer = await this.customerService.findOne(updateOrderDto.customerId);
       if (!customer) throw new BadRequestException("Customer not exist");

@@ -39,6 +39,9 @@ export class RestaurantController {
 
   @Patch(":id")
   async update(@Param("id", ParseIntPipe) id: number, @Body() updateRestaurantDto: UpdateRestaurantDto) {
+    const restaurant = await this.restaurantService.findOne(id);
+    if (!restaurant) throw new NotFoundException();
+
     return this.restaurantService.update(+id, updateRestaurantDto);
   }
 
