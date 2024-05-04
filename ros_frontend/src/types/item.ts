@@ -7,3 +7,9 @@ export type Item = {
   restaurantId: number;
   restaurant: Restaurant;
 };
+
+export type ItemFormData = {
+  name: string;
+  price: number;
+  restaurantId: number;
+};

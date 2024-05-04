@@ -38,3 +38,25 @@ export const restaurantTableColumns: GridColDef[] = [
     flex: 1,
   },
 ];
+
+export const itemTableColumns: GridColDef[] = [
+  {
+    field: "id",
+    headerName: "ID",
+  },
+  {
+    field: "name",
+    headerName: "Name",
+    flex: 1,
+  },
+  {
+    field: "price",
+    headerName: "Price",
+    flex: 1,
+  },
+  {
+    field: "restaurantName",
+    headerName: "Restaurant",
+    flex: 1,
+  },
+];
