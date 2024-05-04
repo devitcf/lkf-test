@@ -1,7 +1,7 @@
 "use server";
 import { login, logout } from "@/api/auth";
 import { cookies } from "next/headers";
-import { logApiError } from "@/helper";
+import { logApiError } from "@/helper/api";
 
 export const loginAction = async (username: string, password: string): Promise<boolean> => {
   try {

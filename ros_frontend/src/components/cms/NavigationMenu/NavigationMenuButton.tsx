@@ -1,11 +1,11 @@
 "use client";
-import { NavigationMenuItem } from "@/types";
 import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
 import StorefrontOutlinedIcon from "@mui/icons-material/StorefrontOutlined";
 import FastfoodOutlinedIcon from "@mui/icons-material/FastfoodOutlined";
 import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { NavigationMenuItem } from "@/types";
 
 type Props = {
   menuItem: NavigationMenuItem;
@@ -20,16 +20,16 @@ const NavigationMenuButton = ({ menuItem }: Props) => {
   let icon;
   switch (menuItem.type) {
     case "customers":
-      icon = <PeopleOutlineIcon role="img" aria-label="People Outline Icon" />;
+      icon = <PeopleOutlineIcon />;
       break;
     case "restaurants":
-      icon = <StorefrontOutlinedIcon role="img" aria-label="Store front Outline Icon" />;
+      icon = <StorefrontOutlinedIcon />;
       break;
     case "items":
-      icon = <FastfoodOutlinedIcon role="img" aria-label="Fast food Outline Icon" />;
+      icon = <FastfoodOutlinedIcon />;
       break;
     case "orders":
-      icon = <ReceiptOutlinedIcon role="img" aria-label="Receipt Outline Icon" />;
+      icon = <ReceiptOutlinedIcon />;
       break;
   }
 

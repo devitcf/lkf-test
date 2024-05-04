@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { jwtDecode } from "jwt-decode";
 import { renewToken } from "@/api/auth";
-import { logApiError } from "@/helper";
+import { logApiError } from "@/helper/api";
 
 const LOGIN_URL = `${process.env.APPLICATION_BASE_PATH}/login`;
 

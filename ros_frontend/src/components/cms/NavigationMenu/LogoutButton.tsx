@@ -26,7 +26,7 @@ const LogoutButton = () => {
         }}
         variant="outlined"
       >
-        <LogoutOutlinedIcon role="img" aria-label="Logout Outline Icon" />
+        <LogoutOutlinedIcon />
         <span className={"hidden md:block"}>Log out</span>
       </Button>
     </>

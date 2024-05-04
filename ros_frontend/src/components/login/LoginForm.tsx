@@ -87,13 +87,7 @@ const LoginForm = () => {
               type: showPass ? "text" : "password",
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton
-                    data-testid="toggleBtn"
-                    aria-label="Toggle password visibility"
-                    tabIndex={-1}
-                    onClick={() => setShowPass(!showPass)}
-                    edge="end"
-                  >
+                  <IconButton data-testid="toggleBtn" tabIndex={-1} onClick={() => setShowPass(!showPass)} edge="end">
                     {showPass ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
@@ -102,7 +96,6 @@ const LoginForm = () => {
             fullWidth
           />
           <Button
-            aria-label="submit"
             variant="contained"
             sx={{
               mt: 3,
@@ -119,7 +112,7 @@ const LoginForm = () => {
           </Button>
         </Box>
       </Box>
-      <ToastContainer theme={"colored"} />
+      <ToastContainer theme="colored" />
     </Grid>
   );
 };

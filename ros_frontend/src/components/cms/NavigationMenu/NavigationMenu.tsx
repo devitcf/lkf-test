@@ -1,5 +1,5 @@
-import NavigationMenuButton from "@/components/cms/NavigationMenuButton";
-import LogoutButton from "@/components/cms/LogoutButton";
+import NavigationMenuButton from "@/components/cms/NavigationMenu/NavigationMenuButton";
+import LogoutButton from "@/components/cms/NavigationMenu/LogoutButton";
 import { NavigationMenuItem } from "@/types";
 
 const menuItems: NavigationMenuItem[] = ["customers", "restaurants", "items", "orders"].map((item) => ({
