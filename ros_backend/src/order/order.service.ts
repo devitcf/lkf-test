@@ -4,7 +4,6 @@ import { UpdateOrderDto } from "./dto/update-order.dto";
 import { PrismaService } from "../prisma/prisma.service";
 import { Prisma, PrismaPromise } from "@prisma/client";
 import { Order } from "./entities/order.entity";
-import { AddItemToOrderDto } from "./dto/add-item-to-order.dto";
 
 @Injectable()
 export class OrderService {
@@ -12,17 +11,16 @@ export class OrderService {
 
   async create(createOrderDto: CreateOrderDto): Promise<Order> {
     const { customerId, restaurantId, itemIds } = createOrderDto;
+    const items = await this.prisma.item.findMany({ where: { id: { in: itemIds } } });
+    if (items.some((item) => item.restaurantId !== restaurantId)) {
+      throw new BadRequestException("Some itemIds are not belong to the restaurant");
+    }
+
     try {
       const order = await this.prisma.order.create({
         data: {
           customerId,
           restaurantId,
-        },
-      });
-
-      const updatedOrder = await this.prisma.order.update({
-        where: { id: order.id },
-        data: {
           orderItems: {
             createMany: {
               data: (itemIds ?? []).map((itemId) => ({ itemId })),
@@ -32,7 +30,7 @@ export class OrderService {
         include: { orderItems: { include: { item: true } } },
       });
 
-      const totalPrice = updatedOrder.orderItems.reduce((sum, cur) => sum + cur.item.price, 0);
+      const totalPrice = order.orderItems.reduce((sum, cur) => sum + cur.item.price, 0);
 
       return await this.prisma.order.update({
         where: { id: order.id },
@@ -42,8 +40,8 @@ export class OrderService {
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
         // Prisma: An operation failed because it depends on one or more records that were required but not found.
-        if (e.code === "P2025" || e.code === "P2003") {
-          throw new BadRequestException({ message: "Some itemIds are not valid" });
+        if (e.code === "P2003" || e.code === "P2025") {
+          throw new BadRequestException("Some itemIds are not valid");
         }
       }
       throw e;
@@ -65,29 +63,16 @@ export class OrderService {
   }
 
   async update(id: number, updateOrderDto: UpdateOrderDto): Promise<Order> {
-    const { customerId, restaurantId } = updateOrderDto;
-    try {
-      return await this.prisma.order.update({
-        where: { id },
-        data: {
-          customerId,
-          restaurantId,
-        },
-        include: { customer: true, restaurant: true, orderItems: { include: { item: true } } },
-      });
-    } catch (e) {
-      if (e instanceof Prisma.PrismaClientKnownRequestError) {
-        // Prisma: An operation failed because it depends on one or more records that were required but not found.
-        if (e.code === "P2003" || e.code === "P2003") {
-          throw new BadRequestException({ message: "Some itemIds are not valid" });
-        }
-      }
-      throw e;
-    }
-  }
+    const { itemIds, removeOrderItemIds } = updateOrderDto;
+    const order = await this.prisma.order.findUnique({ where: { id } });
 
-  async addItemToOrder(id: number, addItemToOrderDto: AddItemToOrderDto): Promise<Order> {
-    const { itemIds } = addItemToOrderDto;
+    if (order) {
+      const items = await this.prisma.item.findMany({ where: { id: { in: itemIds ?? [] } } });
+      if (items.some((item) => item.restaurantId !== order.restaurantId)) {
+        throw new BadRequestException("Some itemIds are not belong to the restaurant");
+      }
+    }
+
     try {
       const order = await this.prisma.order.update({
         where: { id },
@@ -96,23 +81,23 @@ export class OrderService {
             createMany: {
               data: (itemIds ?? []).map((itemId) => ({ itemId })),
             },
+            deleteMany: (removeOrderItemIds ?? []).map((orderItemId) => ({ id: orderItemId })),
           },
         },
         include: { orderItems: { include: { item: true } } },
       });
-
       const totalPrice = order.orderItems.reduce((sum, cur) => sum + cur.item.price, 0);
 
       return await this.prisma.order.update({
         where: { id: order.id },
         data: { totalPrice },
-        include: { customer: true, restaurant: true, orderItems: { include: { item: true } } },
+        include: { customer: true, restaurant: true, orderItems: true },
       });
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
         // Prisma: An operation failed because it depends on one or more records that were required but not found.
         if (e.code === "P2003" || e.code === "P2025") {
-          throw new BadRequestException({ message: "Some itemIds are not valid" });
+          throw new BadRequestException("Some itemIds are not valid");
         }
       }
       throw e;

@@ -32,7 +32,7 @@ export class CustomerController {
 
   @Get(":id")
   async findOne(@Param("id", ParseIntPipe) id: number) {
-    const user = await this.customerService.findOne(+id);
+    const user = await this.customerService.findOne(id);
     if (!user) throw new NotFoundException();
     return user;
   }
@@ -42,7 +42,7 @@ export class CustomerController {
     const customer = await this.customerService.findOne(id);
     if (!customer) throw new NotFoundException();
 
-    return this.customerService.update(+id, updateCustomerDto);
+    return this.customerService.update(id, updateCustomerDto);
   }
 
   @Delete(":id")
@@ -51,6 +51,6 @@ export class CustomerController {
     const customer = await this.customerService.findOne(id);
     if (!customer) throw new NotFoundException();
 
-    return this.customerService.remove(+id);
+    return this.customerService.remove(id);
   }
 }

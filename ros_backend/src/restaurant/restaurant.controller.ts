@@ -32,7 +32,7 @@ export class RestaurantController {
 
   @Get(":id")
   async findOne(@Param("id", ParseIntPipe) id: number) {
-    const restaurant = await this.restaurantService.findOne(+id);
+    const restaurant = await this.restaurantService.findOne(id);
     if (!restaurant) throw new NotFoundException();
     return restaurant;
   }
@@ -42,7 +42,7 @@ export class RestaurantController {
     const restaurant = await this.restaurantService.findOne(id);
     if (!restaurant) throw new NotFoundException();
 
-    return this.restaurantService.update(+id, updateRestaurantDto);
+    return this.restaurantService.update(id, updateRestaurantDto);
   }
 
   @Delete(":id")
@@ -51,6 +51,6 @@ export class RestaurantController {
     const restaurant = await this.restaurantService.findOne(id);
     if (!restaurant) throw new NotFoundException();
 
-    return this.restaurantService.remove(+id);
+    return this.restaurantService.remove(id);
   }
 }

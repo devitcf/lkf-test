@@ -23,8 +23,8 @@ export class CustomerService {
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
         // Prisma: An operation failed because it depends on one or more records that were required but not found.
-        if (e.code === "P2003" || e.code === "P2003") {
-          throw new BadRequestException({ message: "Some restaurantIds are not valid" });
+        if (e.code === "P2003" || e.code === "P2025") {
+          throw new BadRequestException("Some restaurantIds are not valid");
         }
       }
       throw e;
@@ -54,8 +54,8 @@ export class CustomerService {
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
         // Prisma: An operation failed because it depends on one or more records that were required but not found.
-        if (e.code === "P2003" || e.code === "P2003") {
-          throw new BadRequestException({ message: "Some restaurantIds are not valid" });
+        if (e.code === "P2003" || e.code === "P2025") {
+          throw new BadRequestException("Some restaurantIds are not valid");
         }
       }
       throw e;

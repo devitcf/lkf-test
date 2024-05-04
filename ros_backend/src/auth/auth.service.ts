@@ -24,11 +24,11 @@ export class AuthService {
     const user = await this.userService.findUserByUsername(username);
 
     if (!user) {
-      throw new UnauthorizedException({ message: "Incorrect username or password" });
+      throw new UnauthorizedException("Incorrect username or password");
     }
     const passwordMatches = await argon2.verify(user?.password, password);
     if (!passwordMatches) {
-      throw new UnauthorizedException({ message: "Incorrect username or password" });
+      throw new UnauthorizedException("Incorrect username or password");
     }
 
     const tokens = await this.generateTokens(user);
@@ -41,7 +41,7 @@ export class AuthService {
       where: { jti },
     });
     if (!activeRefreshToken) {
-      throw new UnauthorizedException({ message: "Access denied" });
+      throw new UnauthorizedException("Access denied");
     }
 
     await this.prisma.activeRefreshToken.delete({ where: { jti } });
@@ -83,15 +83,15 @@ export class AuthService {
   }
 
   async refreshToken(userId: number, jti: string): Promise<AuthEntity> {
-    const user = await this.userService.findOne(userId);
+    const user = await this.userService.findOne(+userId);
     if (!user) {
-      throw new UnauthorizedException({ message: "Access denied" });
+      throw new UnauthorizedException("Access denied");
     }
     const activeRefreshToken = await this.prisma.activeRefreshToken.findFirst({
       where: { jti },
     });
     if (!activeRefreshToken) {
-      throw new UnauthorizedException({ message: "Access denied" });
+      throw new UnauthorizedException("Access denied");
     }
 
     await this.prisma.activeRefreshToken.delete({ where: { jti } });

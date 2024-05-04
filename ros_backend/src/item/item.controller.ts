@@ -40,9 +40,9 @@ export class ItemController {
 
   @Get(":id")
   async findOne(@Param("id", ParseIntPipe) id: number) {
-    const item = await this.itemService.findOne(+id);
+    const item = await this.itemService.findOne(id);
     if (!item) throw new NotFoundException();
-    return this.itemService.findOne(+id);
+    return this.itemService.findOne(id);
   }
 
   @Patch(":id")
@@ -54,7 +54,7 @@ export class ItemController {
       if (!restaurant) throw new BadRequestException("Restaurant not exist");
     }
 
-    return this.itemService.update(+id, updateItemDto);
+    return this.itemService.update(id, updateItemDto);
   }
 
   @Delete(":id")
@@ -63,6 +63,6 @@ export class ItemController {
     const item = await this.itemService.findOne(id);
     if (!item) throw new NotFoundException();
 
-    return this.itemService.remove(+id);
+    return this.itemService.remove(id);
   }
 }
