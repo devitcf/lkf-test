@@ -17,9 +17,10 @@ services:
       timeout: 5s
       retries: 3
   ros_nestjs:
-    build:
-      context: ../ros_backend
-      dockerfile: ../ros_backend/Dockerfile
+#    build:
+#      context: ../ros_backend
+#      dockerfile: ../ros_backend/Dockerfile
+    image: devitcf/ros_nestjs
     restart: unless-stopped
     networks:
       - bridge
@@ -38,9 +39,10 @@ services:
       npm run start:prod \
       "
   ros_nextjs:
-    build:
-      context: ../ros_frontend
-      dockerfile: ../ros_frontend/Dockerfile
+#    build:
+#      context: ../ros_frontend
+#      dockerfile: ../ros_frontend/Dockerfile
+    image: devitcf/ros_nextjs
     restart: unless-stopped
     networks:
       - bridge
